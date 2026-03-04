@@ -22,8 +22,8 @@ This project uses `npm@11.6.4` as specified in the `packageManager` field. The p
     Clone the Count App repository to your local machine:
     
     ```bash
-    git clone <repository-url>
-    cd count-app
+    git clone https://github.com/GIODIROSA/count-app-angular.git
+    cd count-app-angular
     ```
   </Step>
 
@@ -39,7 +39,7 @@ This project uses `npm@11.6.4` as specified in the `packageManager` field. The p
     - Tailwind CSS 4.1.12 for styling
     - Vitest 4.0.8 for testing
     - Express 5.1.0 for SSR server
-    - All other required packages from package.json:package.json
+    - All other required packages from package.json
   </Step>
 
   <Step title="Start the development server">
@@ -64,7 +64,7 @@ This project uses `npm@11.6.4` as specified in the `packageManager` field. The p
 The Count App follows the standard Angular project structure:
 
 ```
-count-app/
+count-app-angular/
 ├── src/
 │   ├── app/              # Application components and logic
 │   ├── index.html        # Main HTML template
@@ -77,7 +77,7 @@ count-app/
 ├── angular.json          # Angular CLI configuration
 ├── package.json          # Project dependencies and scripts
 ├── tsconfig.json         # TypeScript configuration
-└── tailwind.config.js    # Tailwind CSS configuration
+└── .postcssrc.json       # PostCSS configuration for Tailwind
 ```
 
 ### Key Directories
@@ -118,7 +118,7 @@ To use these, open the Run and Debug panel in VSCode (Ctrl+Shift+D) and select t
 
 ## Available Scripts
 
-The following npm scripts are available in package.json:package.json:
+The following npm scripts are available in package.json:
 
 <CodeGroup>
 ```bash Development Server
@@ -151,12 +151,12 @@ npm run serve:ssr:count-app
 
 The project uses strict TypeScript settings for better type safety:
 
-- **Strict mode** enabled (tsconfig.json:6)
-- **No implicit returns** (tsconfig.json:9)
-- **Isolated modules** (tsconfig.json:12)
-- **ES2022** target (tsconfig.json:15)
+- **Strict mode** enabled
+- **No implicit returns** 
+- **Isolated modules**
+- **ES2022** target
 
-These settings help catch errors early and improve code quality.
+These strict settings help catch errors early and improve code quality.
 
 ## Next Steps
 

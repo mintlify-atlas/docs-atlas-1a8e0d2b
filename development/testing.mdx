@@ -27,14 +27,14 @@ ng test
 ```
 
 <Note>
-The test command uses the `@angular/build:unit-test` builder configured in angular.json:76.
+The test command uses the `@angular/build:unit-test` builder configured in angular.json.
 </Note>
 
 ## Test Configuration
 
 ### TypeScript Configuration
 
-The test setup is configured in tsconfig.spec.json:4:
+The test setup is configured in tsconfig.spec.json:
 
 ```json tsconfig.spec.json
 {
@@ -59,7 +59,7 @@ The test setup is configured in tsconfig.spec.json:4:
 
 ### Angular Test Builder
 
-The test builder is configured in angular.json:75-77:
+The test builder is configured in angular.json:
 
 ```json angular.json
 "test": {
@@ -71,7 +71,7 @@ The test builder is configured in angular.json:75-77:
 
 ### Basic Component Test
 
-Here's the example test from src/app/app.spec.ts:4:
+Here's the example test from src/app/app.spec.ts:
 
 ```typescript src/app/app.spec.ts
 import { TestBed } from '@angular/core/testing';
@@ -240,7 +240,7 @@ it('should increment counter when button is clicked', async () => {
 
 ## VSCode Integration
 
-The project includes a VSCode launch configuration for running tests (see .vscode/launch.json:12-18):
+The project includes a VSCode launch configuration for running tests (see .vscode/launch.json):
 
 ```json
 {
@@ -272,7 +272,7 @@ To use it:
   </Accordion>
 
   <Accordion title="Vitest globals not recognized">
-    Make sure `vitest/globals` is in your types array in tsconfig.spec.json:7-9:
+    Make sure `vitest/globals` is in your types array in tsconfig.spec.json:
     
     ```json
     "types": [

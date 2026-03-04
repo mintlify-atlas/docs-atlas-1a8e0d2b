@@ -22,14 +22,14 @@ ng build
 ```
 
 <Note>
-The default configuration is set to **production** (angular.json:61), which includes optimizations, tree-shaking, and minification.
+The default configuration is set to **production**, which includes optimizations, tree-shaking, and minification.
 </Note>
 
 ## Build Configurations
 
 ### Production Configuration
 
-The production build (angular.json:40-54) includes:
+The production build includes:
 
 <CodeGroup>
 ```json angular.json
@@ -59,7 +59,7 @@ The production build (angular.json:40-54) includes:
 
 ### Development Configuration
 
-For faster builds during development (angular.json:55-59):
+For faster builds during development:
 
 ```bash
 npm run watch
@@ -106,13 +106,13 @@ The `browser/` directory contains:
 
 ### Server Output
 
-The `server/` directory contains the SSR server built from src/server.ts:1.
+The `server/` directory contains the SSR server built from src/server.ts.
 
 ## SSR (Server-Side Rendering)
 
 ### SSR Configuration
 
-The build is configured for SSR (angular.json:30-37):
+The build is configured for SSR in angular.json:
 
 ```json
 "server": "src/main.server.ts",
@@ -123,9 +123,9 @@ The build is configured for SSR (angular.json:30-37):
 ```
 
 **Entry points:**
-- **Browser**: src/main.ts (angular.json:19)
-- **Server**: src/main.server.ts (angular.json:30)
-- **SSR Server**: src/server.ts (angular.json:36)
+- **Browser**: src/main.ts
+- **Server**: src/main.server.ts
+- **SSR Server**: src/server.ts
 
 ### Building for SSR
 
@@ -145,12 +145,12 @@ The build is configured for SSR (angular.json:30-37):
     npm run serve:ssr:count-app
     ```
     
-    This runs the Express server from dist/count-app/server/server.mjs:1.
+    This runs the Express server from dist/count-app/server/server.mjs.
   </Step>
 </Steps>
 
 <Note>
-The SSR server uses **Express 5.1.0** (package.json:23) to handle requests and render pages on the server.
+The SSR server uses **Express 5.1.0** to handle requests and render pages on the server.
 </Note>
 
 ## Build Options
@@ -177,7 +177,7 @@ The build uses tsconfig.app.json for compilation:
 
 ### Assets Configuration
 
-Static assets are configured in angular.json:21-25:
+Static assets are configured in angular.json:
 
 ```json
 "assets": [
@@ -192,7 +192,7 @@ All files in the `public/` directory are copied to the build output.
 
 ### Styles Configuration
 
-Global styles are specified in angular.json:27-29:
+Global styles are specified in angular.json:
 
 ```json
 "styles": [
@@ -355,7 +355,7 @@ CMD ["npm", "run", "serve:ssr:count-app"]
   </Accordion>
 
   <Accordion title="Assets not copied to output">
-    Check your assets configuration in angular.json:21-25. Files must be in the `public/` directory.
+    Check your assets configuration in angular.json. Files must be in the `public/` directory.
   </Accordion>
 </AccordionGroup>
 
