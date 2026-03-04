@@ -1,0 +1,84 @@
+---
+title: 'App Component'
+description: 'Root component that bootstraps the Angular application with routing support'
+---
+
+## Overview
+
+The `App` component is the root component of the Count App application. It provides the foundation for the entire application by setting up the router outlet and maintaining the application title using Angular signals.
+
+## Component Definition
+
+```typescript
+import { Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet],
+  templateUrl: './app.html',
+})
+export class App {
+  protected readonly title = signal('count-app');
+}
+```
+
+## Component Configuration
+
+<ParamField path="selector" type="string" default="app-root">
+  The HTML selector used to render this component in the DOM
+</ParamField>
+
+<ParamField path="imports" type="Array">
+  Imports the `RouterOutlet` component for client-side routing support
+</ParamField>
+
+<ParamField path="templateUrl" type="string" default="./app.html">
+  External template file location
+</ParamField>
+
+## Properties
+
+### title
+
+```typescript
+protected readonly title = signal('count-app');
+```
+
+A reactive signal containing the application title. This demonstrates Angular's modern signal-based reactivity system.
+
+<Note>
+  The `title` property is marked as `protected` and `readonly`, making it accessible only within the component class and its descendants, while preventing reassignment.
+</Note>
+
+## Template
+
+The App component uses a minimal template that renders the router outlet:
+
+```html
+<router-outlet />
+```
+
+The `<router-outlet>` directive acts as a placeholder where routed components are rendered based on the current navigation state.
+
+## Usage
+
+The App component is typically bootstrapped in the application configuration:
+
+```typescript
+import { App } from './app/app';
+
+bootstrapApplication(App, appConfig);
+```
+
+## Key Features
+
+- **Standalone Component**: Uses Angular's standalone API without requiring NgModule
+- **Signal-Based State**: Leverages Angular signals for reactive state management
+- **Routing Ready**: Includes RouterOutlet for SPA navigation
+- **External Template**: Separates HTML markup into a dedicated file for better organization
+
+## Related
+
+- [Counter Component](/components/counter) - The main counter page component
+- [Routing Configuration](/configuration/routing) - Learn about application routes

@@ -1,0 +1,122 @@
+---
+title: Introduction
+description: Learn about Count App, a simple Angular counter application demonstrating modern Angular features including signals, SSR, and Tailwind CSS
+---
+
+## What is Count App?
+
+Count App is a lightweight Angular application that demonstrates the fundamentals of building interactive web applications with Angular 21. It implements a simple counter interface where users can increment, decrement, and reset a numeric value.
+
+While the functionality is straightforward, Count App serves as an excellent reference for learning modern Angular development patterns and best practices.
+
+## Architecture Overview
+
+Count App is built with cutting-edge Angular features and tools:
+
+### Angular 21
+The application leverages the latest Angular framework (version 21.2.0) with modern component architecture and standalone components.
+
+### Signals
+The app component uses Angular signals for reactive state management:
+
+```typescript
+export class App {
+  protected readonly title = signal('count-app');
+}
+```
+
+### Server-Side Rendering (SSR)
+Count App includes full SSR support with:
+- Client hydration with event replay for improved performance
+- Express server configuration for production deployment
+- Optimized initial page load
+
+```typescript
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideRouter(routes), 
+    provideClientHydration(withEventReplay())
+  ]
+};
+```
+
+### Tailwind CSS
+The project is configured with Tailwind CSS 4.1.12 for modern, utility-first styling:
+
+```css
+@import 'tailwindcss';
+```
+
+### Vitest Testing
+Unit tests are powered by Vitest, a fast and modern test runner designed for Vite-based projects.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Component-Based Architecture" icon="puzzle-piece">
+    Modular design with a dedicated CountPageComponent that encapsulates counter logic
+  </Card>
+  <Card title="Event Handling" icon="hand-pointer">
+    Click event binding demonstrating Angular's template syntax and event system
+  </Card>
+  <Card title="State Management" icon="database">
+    Simple yet effective state management with boundary validation
+  </Card>
+  <Card title="Routing" icon="route">
+    Angular Router configuration with route definitions and lazy loading support
+  </Card>
+</CardGroup>
+
+## Application Structure
+
+The counter logic is implemented in the `CountPageComponent` (src/app/count/counter.components.ts):
+
+```typescript
+export class CountPageComponent {
+  counter = 10;
+
+  incrementby(value: number) {
+    this.counter = Math.max(0, this.counter + value);
+  }
+
+  reset() {
+    this.counter = 0
+  }
+}
+```
+
+Key implementation details:
+- **Initial state**: Counter starts at 10
+- **Boundary validation**: Uses `Math.max(0, ...)` to prevent negative values
+- **Method-based actions**: Clean separation of increment and reset logic
+
+## When to Use Count App as a Learning Resource
+
+<Note>
+Count App is ideal for developers who want to understand:
+- Angular component fundamentals
+- Event binding and template syntax
+- SSR configuration and hydration
+- Modern Angular project structure
+- Integration of Tailwind CSS with Angular
+</Note>
+
+<Warning>
+This is a learning application and not intended for production use as-is. It demonstrates core concepts that can be applied to real-world projects.
+</Warning>
+
+## Next Steps
+
+Ready to get started? Follow the [quickstart guide](/quickstart) to install dependencies, run the development server, and interact with the counter application.
+
+## Technology Stack
+
+| Technology | Version | Purpose |
+|------------|---------|----------|
+| Angular | 21.2.0 | Frontend framework |
+| TypeScript | 5.9.2 | Type-safe development |
+| Tailwind CSS | 4.1.12 | Utility-first styling |
+| Express | 5.1.0 | SSR server |
+| Vitest | 4.0.8 | Unit testing |
+| RxJS | 7.8.0 | Reactive programming |

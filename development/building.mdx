@@ -1,0 +1,372 @@
+---
+title: 'Building'
+description: 'Build Count App for production deployment with SSR support'
+---
+
+## Build Process
+
+Count App uses Angular's application builder with Server-Side Rendering (SSR) support. The build process compiles your TypeScript code, bundles assets, and generates optimized output for both browser and server.
+
+## Production Build
+
+Create a production-ready build:
+
+```bash
+npm run build
+```
+
+Or using the Angular CLI:
+
+```bash
+ng build
+```
+
+<Note>
+The default configuration is set to **production** (angular.json:61), which includes optimizations, tree-shaking, and minification.
+</Note>
+
+## Build Configurations
+
+### Production Configuration
+
+The production build (angular.json:40-54) includes:
+
+<CodeGroup>
+```json angular.json
+"production": {
+  "budgets": [
+    {
+      "type": "initial",
+      "maximumWarning": "500kB",
+      "maximumError": "1MB"
+    },
+    {
+      "type": "anyComponentStyle",
+      "maximumWarning": "4kB",
+      "maximumError": "8kB"
+    }
+  ],
+  "outputHashing": "all"
+}
+```
+</CodeGroup>
+
+**Features:**
+- **Output hashing**: All files get content-based hashes for cache busting
+- **Bundle budgets**: Build fails if initial bundle exceeds 1MB
+- **Style budgets**: Component styles limited to 8kB maximum
+- **Optimizations**: Minification, tree-shaking, and dead code elimination enabled by default
+
+### Development Configuration
+
+For faster builds during development (angular.json:55-59):
+
+```bash
+npm run watch
+```
+
+This uses the development configuration:
+
+```json
+"development": {
+  "optimization": false,
+  "extractLicenses": false,
+  "sourceMap": true
+}
+```
+
+**Features:**
+- No optimization for faster builds
+- Source maps enabled for debugging
+- License extraction disabled
+- Rebuilds automatically on file changes
+
+## Build Output Structure
+
+After building, the `dist/count-app/` directory contains:
+
+```
+dist/count-app/
+├── browser/              # Client-side application files
+│   ├── index.html       # Main HTML file
+│   ├── main-[hash].js   # Application bundle
+│   ├── polyfills-[hash].js
+│   └── styles-[hash].css
+└── server/              # Server-side rendering files
+    └── server.mjs       # Express server for SSR
+```
+
+### Browser Output
+
+The `browser/` directory contains:
+- Compiled and bundled JavaScript
+- Processed CSS with Tailwind utilities
+- Static assets from the `public/` directory
+- Hashed filenames for cache management
+
+### Server Output
+
+The `server/` directory contains the SSR server built from src/server.ts:1.
+
+## SSR (Server-Side Rendering)
+
+### SSR Configuration
+
+The build is configured for SSR (angular.json:30-37):
+
+```json
+"server": "src/main.server.ts",
+"outputMode": "server",
+"ssr": {
+  "entry": "src/server.ts"
+}
+```
+
+**Entry points:**
+- **Browser**: src/main.ts (angular.json:19)
+- **Server**: src/main.server.ts (angular.json:30)
+- **SSR Server**: src/server.ts (angular.json:36)
+
+### Building for SSR
+
+<Steps>
+  <Step title="Run the build command">
+    The standard build command creates both browser and server bundles:
+    
+    ```bash
+    npm run build
+    ```
+  </Step>
+
+  <Step title="Serve the SSR build">
+    After building, serve the application with Node.js:
+    
+    ```bash
+    npm run serve:ssr:count-app
+    ```
+    
+    This runs the Express server from dist/count-app/server/server.mjs:1.
+  </Step>
+</Steps>
+
+<Note>
+The SSR server uses **Express 5.1.0** (package.json:23) to handle requests and render pages on the server.
+</Note>
+
+## Build Options
+
+### TypeScript Configuration
+
+The build uses tsconfig.app.json for compilation:
+
+```json tsconfig.app.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*.spec.ts"]
+}
+```
+
+- Excludes test files from the build
+- Includes Node.js types for SSR support
+- Outputs to `out-tsc/app/`
+
+### Assets Configuration
+
+Static assets are configured in angular.json:21-25:
+
+```json
+"assets": [
+  {
+    "glob": "**/*",
+    "input": "public"
+  }
+]
+```
+
+All files in the `public/` directory are copied to the build output.
+
+### Styles Configuration
+
+Global styles are specified in angular.json:27-29:
+
+```json
+"styles": [
+  "src/styles.css"
+]
+```
+
+This includes your Tailwind CSS configuration and global styles.
+
+## Bundle Budgets
+
+The build enforces size budgets to keep your app performant:
+
+<Tabs>
+  <Tab title="Initial Bundle">
+    - **Warning**: 500kB
+    - **Error**: 1MB
+    
+    The initial JavaScript bundle that loads when the app starts.
+  </Tab>
+  
+  <Tab title="Component Styles">
+    - **Warning**: 4kB
+    - **Error**: 8kB
+    
+    Individual component style files.
+  </Tab>
+</Tabs>
+
+If your build exceeds these budgets:
+
+```bash
+Warning: bundle initial exceeded maximum budget.
+Expected: 500kB
+Actual: 512kB
+```
+
+<Warning>
+Builds that exceed the **error** threshold will fail. Consider code splitting or lazy loading to reduce bundle size.
+</Warning>
+
+## Optimization Strategies
+
+<AccordionGroup>
+  <Accordion title="Lazy Loading">
+    Use Angular's router to lazy load feature modules:
+    
+    ```typescript
+    const routes: Routes = [
+      {
+        path: 'feature',
+        loadComponent: () => import('./feature/feature.component')
+          .then(m => m.FeatureComponent)
+      }
+    ];
+    ```
+  </Accordion>
+
+  <Accordion title="Tree Shaking">
+    Import only what you need from libraries:
+    
+    ```typescript
+    // Good: Tree-shakeable
+    import { map } from 'rxjs/operators';
+    
+    // Avoid: Imports entire library
+    import * as rxjs from 'rxjs';
+    ```
+  </Accordion>
+
+  <Accordion title="Analyze Bundle Size">
+    Use Angular CLI's built-in analysis:
+    
+    ```bash
+    ng build --stats-json
+    npx webpack-bundle-analyzer dist/count-app/browser/stats.json
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Environment-Specific Builds
+
+Build for specific environments:
+
+<CodeGroup>
+```bash Production
+ng build --configuration production
+```
+
+```bash Development
+ng build --configuration development
+```
+</CodeGroup>
+
+## Serving the Production Build
+
+### SSR Mode (Recommended)
+
+```bash
+npm run serve:ssr:count-app
+```
+
+This starts the Express server with server-side rendering.
+
+### Static Serving
+
+You can also serve the browser output with any static file server:
+
+```bash
+npx serve dist/count-app/browser
+```
+
+<Note>
+Static serving won't include SSR benefits like improved SEO and faster initial page load.
+</Note>
+
+## Deployment
+
+The build output is ready for deployment to:
+
+- **Node.js hosts**: Deploy the entire `dist/count-app/` directory and run the SSR server
+- **Static hosts**: Deploy only the `dist/count-app/browser/` directory
+- **Docker**: Create a container with Node.js and the build output
+
+### Example Dockerfile
+
+```dockerfile
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY dist/count-app ./dist/count-app
+COPY package.json .
+
+RUN npm install --production
+
+EXPOSE 4000
+
+CMD ["npm", "run", "serve:ssr:count-app"]
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Build fails with budget errors">
+    Your bundle size exceeds the limits. Options:
+    
+    1. Implement lazy loading for large features
+    2. Remove unused dependencies
+    3. Adjust budgets in angular.json (not recommended)
+  </Accordion>
+
+  <Accordion title="SSR server fails to start">
+    Ensure you built the project first:
+    
+    ```bash
+    npm run build
+    npm run serve:ssr:count-app
+    ```
+  </Accordion>
+
+  <Accordion title="Assets not copied to output">
+    Check your assets configuration in angular.json:21-25. Files must be in the `public/` directory.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Setup Guide" icon="wrench" href="/development/setup">
+    Return to the setup guide
+  </Card>
+  
+  <Card title="Testing" icon="flask" href="/development/testing">
+    Learn about testing your application
+  </Card>
+</CardGroup>

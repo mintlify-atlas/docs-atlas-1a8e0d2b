@@ -1,0 +1,171 @@
+---
+title: 'Development Setup'
+description: 'Set up your local development environment for Count App'
+---
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (v20 or higher recommended)
+- **npm** 11.6.4 or higher
+- **Angular CLI** 21.2.0 or higher
+
+<Note>
+This project uses `npm@11.6.4` as specified in the `packageManager` field. The package manager will be automatically used when running npm commands.
+</Note>
+
+## Clone and Install
+
+<Steps>
+  <Step title="Clone the repository">
+    Clone the Count App repository to your local machine:
+    
+    ```bash
+    git clone <repository-url>
+    cd count-app
+    ```
+  </Step>
+
+  <Step title="Install dependencies">
+    Install all required dependencies using npm:
+    
+    ```bash
+    npm install
+    ```
+    
+    This will install:
+    - Angular 21.2.0 framework and dependencies
+    - Tailwind CSS 4.1.12 for styling
+    - Vitest 4.0.8 for testing
+    - Express 5.1.0 for SSR server
+    - All other required packages from package.json:package.json
+  </Step>
+
+  <Step title="Start the development server">
+    Run the development server:
+    
+    ```bash
+    npm start
+    ```
+    
+    Or using the Angular CLI directly:
+    
+    ```bash
+    ng serve
+    ```
+    
+    The application will be available at `http://localhost:4200/`
+  </Step>
+</Steps>
+
+## Project Structure
+
+The Count App follows the standard Angular project structure:
+
+```
+count-app/
+├── src/
+│   ├── app/              # Application components and logic
+│   ├── index.html        # Main HTML template
+│   ├── main.ts           # Browser entry point
+│   ├── main.server.ts    # Server entry point for SSR
+│   ├── server.ts         # Express server configuration
+│   └── styles.css        # Global styles (Tailwind CSS)
+├── public/               # Static assets
+├── .vscode/              # VSCode configuration
+├── angular.json          # Angular CLI configuration
+├── package.json          # Project dependencies and scripts
+├── tsconfig.json         # TypeScript configuration
+└── tailwind.config.js    # Tailwind CSS configuration
+```
+
+### Key Directories
+
+- **src/app/**: Contains your Angular components, services, and application logic
+- **public/**: Static assets that are copied directly to the output directory
+- **dist/**: Build output directory (generated after running `ng build`)
+
+## VSCode Configuration
+
+The project includes VSCode configuration files in the `.vscode/` directory:
+
+### Recommended Extensions
+
+Install the Angular Language Service extension for the best development experience:
+
+```json .vscode/extensions.json
+{
+  "recommendations": ["angular.ng-template"]
+}
+```
+
+### Debug Configuration
+
+The project includes pre-configured launch configurations:
+
+**Launch Development Server**
+- Name: `ng serve`
+- Opens Chrome and automatically starts the dev server
+- URL: `http://localhost:4200/`
+
+**Launch Tests**
+- Name: `ng test`
+- Opens Chrome and runs tests
+- URL: `http://localhost:9876/debug.html`
+
+To use these, open the Run and Debug panel in VSCode (Ctrl+Shift+D) and select the configuration.
+
+## Available Scripts
+
+The following npm scripts are available in package.json:package.json:
+
+<CodeGroup>
+```bash Development Server
+npm start
+# Starts the Angular dev server at localhost:4200
+```
+
+```bash Build
+npm run build
+# Creates a production build in dist/
+```
+
+```bash Watch Mode
+npm run watch
+# Builds in watch mode with development configuration
+```
+
+```bash Tests
+npm test
+# Runs unit tests with Vitest
+```
+
+```bash Serve SSR
+npm run serve:ssr:count-app
+# Serves the SSR build using Node.js
+```
+</CodeGroup>
+
+## TypeScript Configuration
+
+The project uses strict TypeScript settings for better type safety:
+
+- **Strict mode** enabled (tsconfig.json:6)
+- **No implicit returns** (tsconfig.json:9)
+- **Isolated modules** (tsconfig.json:12)
+- **ES2022** target (tsconfig.json:15)
+
+These settings help catch errors early and improve code quality.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Testing" icon="flask" href="/development/testing">
+    Learn how to write and run tests with Vitest
+  </Card>
+  
+  <Card title="Building" icon="hammer" href="/development/building">
+    Build your app for production deployment
+  </Card>
+</CardGroup>

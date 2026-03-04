@@ -1,0 +1,180 @@
+---
+title: Server-Side Rendering (SSR)
+description: Configure and use server-side rendering in the Count App
+---
+
+The Count App is configured with Angular Universal for server-side rendering (SSR), which improves initial page load performance and SEO.
+
+## SSR Configuration
+
+### Angular.json Settings
+
+The SSR configuration is defined in `angular.json` within the build options:
+
+```json angular.json
+{
+  "architect": {
+    "build": {
+      "builder": "@angular/build:application",
+      "options": {
+        "browser": "src/main.ts",
+        "server": "src/main.server.ts",
+        "outputMode": "server",
+        "ssr": {
+          "entry": "src/server.ts"
+        }
+      }
+    }
+  }
+}
+```
+
+### Key Configuration Options
+
+| Option | Value | Description |
+|--------|-------|-------------|
+| `browser` | `src/main.ts` | Client-side entry point |
+| `server` | `src/main.server.ts` | Server-side bootstrap file |
+| `outputMode` | `server` | Enables server output mode |
+| `ssr.entry` | `src/server.ts` | Express server entry point |
+
+<Note>
+The `outputMode: "server"` setting ensures Angular builds the application for SSR instead of static site generation.
+</Note>
+
+## Server Bootstrap
+
+The server-side bootstrap is configured in `src/main.server.ts`:
+
+```typescript src/main.server.ts
+import { BootstrapContext, bootstrapApplication } from '@angular/platform-browser';
+import { App } from './app/app';
+import { config } from './app/app.config.server';
+
+const bootstrap = (context: BootstrapContext) =>
+    bootstrapApplication(App, config, context);
+
+export default bootstrap;
+```
+
+This file:
+- Imports the server-specific configuration
+- Bootstraps the Angular application with SSR context
+- Exports the bootstrap function for the Express server
+
+## Express Server Setup
+
+The Express server is configured in `src/server.ts`:
+
+```typescript src/server.ts
+import {
+  AngularNodeAppEngine,
+  createNodeRequestHandler,
+  isMainModule,
+  writeResponseToNodeResponse,
+} from '@angular/ssr/node';
+import express from 'express';
+import { join } from 'node:path';
+
+const browserDistFolder = join(import.meta.dirname, '../browser');
+
+const app = express();
+const angularApp = new AngularNodeAppEngine();
+
+// Serve static files from /browser
+app.use(
+  express.static(browserDistFolder, {
+    maxAge: '1y',
+    index: false,
+    redirect: false,
+  }),
+);
+
+// Handle all other requests by rendering the Angular application
+app.use((req, res, next) => {
+  angularApp
+    .handle(req)
+    .then((response) =>
+      response ? writeResponseToNodeResponse(response, res) : next(),
+    )
+    .catch(next);
+});
+
+// Start the server
+if (isMainModule(import.meta.url) || process.env['pm_id']) {
+  const port = process.env['PORT'] || 4000;
+  app.listen(port, (error) => {
+    if (error) {
+      throw error;
+    }
+
+    console.log(`Node Express server listening on http://localhost:${port}`);
+  });
+}
+```
+
+### Server Features
+
+1. **Static File Serving**: Serves pre-built browser assets with 1-year cache
+2. **Angular SSR Engine**: Handles dynamic rendering of Angular components
+3. **Port Configuration**: Defaults to port 4000, configurable via `PORT` environment variable
+4. **API Support**: Placeholder for adding Express REST API endpoints
+
+<Warning>
+The static files are served with a 1-year `maxAge` cache. Make sure to use cache-busting strategies in production.
+</Warning>
+
+## Building and Running SSR
+
+### Build the Application
+
+```bash
+npm run build
+```
+
+This creates both browser and server bundles in the `dist/count-app` directory.
+
+### Serve the SSR Application
+
+Use the npm script to run the SSR server:
+
+```bash
+npm run serve:ssr:count-app
+```
+
+This script is defined in `package.json`:
+
+```json package.json
+{
+  "scripts": {
+    "serve:ssr:count-app": "node dist/count-app/server/server.mjs"
+  }
+}
+```
+
+### Environment Variables
+
+Configure the server using environment variables:
+
+```bash
+PORT=3000 npm run serve:ssr:count-app
+```
+
+<Note>
+The server automatically checks if it's the main module or running via PM2 before starting. This allows the server file to be imported in other contexts without auto-starting.
+</Note>
+
+## Adding API Endpoints
+
+You can add Express REST API endpoints in `src/server.ts` before the Angular catch-all handler:
+
+```typescript
+app.get('/api/data', (req, res) => {
+  res.json({ message: 'Hello from API' });
+});
+```
+
+## Related Pages
+
+- [Building](/development/building) - Learn how to build the application for production
+- [Development Setup](/development/setup) - Understanding the project structure and setup

@@ -1,0 +1,69 @@
+---
+title: Routing Configuration
+description: Learn how to configure routing in the Count App Angular application
+---
+
+The Count App uses Angular's built-in routing system to manage navigation. The routing configuration is simple and demonstrates the basics of Angular routing setup.
+
+## Routes Configuration
+
+The application routes are defined in `src/app/app.routes.ts`:
+
+```typescript src/app/app.routes.ts
+import { Routes } from '@angular/router';
+import { CountPageComponent } from './count/counter.components';
+
+export const routes: Routes = [
+    {
+        path: '',
+        component: CountPageComponent
+    }
+];
+```
+
+## Route Setup
+
+The routing configuration includes:
+
+### Default Route
+
+The application defines a single default route:
+
+- **Path**: `''` (empty string)
+- **Component**: `CountPageComponent`
+- **Behavior**: Displays the counter component on the root path
+
+<Note>
+The empty path (`''`) means this route matches the application's root URL. When users navigate to the base URL, they'll see the counter component.
+</Note>
+
+## How It Works
+
+1. **Route Array**: The `routes` constant is exported as a `Routes` array
+2. **Component Mapping**: The empty path is mapped to the `CountPageComponent`
+3. **Default View**: Since this is the only route, the counter component serves as the application's main view
+
+## Extending Routes
+
+To add more routes to your application, simply add additional route objects to the array:
+
+```typescript
+export const routes: Routes = [
+    {
+        path: '',
+        component: CountPageComponent
+    },
+    {
+        path: 'about',
+        component: AboutComponent
+    }
+];
+```
+
+<Warning>
+Make sure to import any new components you add to the routes array at the top of the file.
+</Warning>
+
+## Related Configuration
+
+The routes are registered in the application configuration using Angular's `provideRouter` function. See the [Components](/components/app) documentation for more details on how routes are integrated into the application.

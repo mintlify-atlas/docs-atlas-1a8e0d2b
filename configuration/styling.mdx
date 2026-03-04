@@ -1,0 +1,171 @@
+---
+title: Styling Configuration
+description: Learn how Tailwind CSS is configured and integrated with Angular in the Count App
+---
+
+The Count App uses Tailwind CSS v4 for styling, integrated with Angular through PostCSS. This setup provides utility-first CSS with excellent developer experience.
+
+## Tailwind CSS Setup
+
+### PostCSS Configuration
+
+Tailwind is configured via PostCSS in `.postcssrc.json`:
+
+```json .postcssrc.json
+{
+  "plugins": {
+    "@tailwindcss/postcss": {}
+  }
+}
+```
+
+<Note>
+This project uses Tailwind CSS v4, which has a simplified configuration approach using the PostCSS plugin.
+</Note>
+
+### Global Styles
+
+The global stylesheet imports Tailwind in `src/styles.css`:
+
+```css src/styles.css
+/* You can add global styles to this file, and also import other style files */
+
+@import 'tailwindcss';
+```
+
+This single import statement loads all of Tailwind's utility classes, making them available throughout the application.
+
+### Angular Integration
+
+The global styles are registered in `angular.json`:
+
+```json angular.json
+{
+  "architect": {
+    "build": {
+      "options": {
+        "styles": [
+          "src/styles.css"
+        ]
+      }
+    }
+  }
+}
+```
+
+## Component Styles
+
+While Tailwind utilities can be used directly in templates, the application also demonstrates traditional CSS for component-specific styles.
+
+### Counter Component Styles
+
+The counter component has custom CSS in `src/app/count/counter.css`:
+
+```css src/app/count/counter.css
+.igt-btn{
+    padding: 5px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;        
+    color: #000;
+    background-color: greenyellow;
+    margin: 20px 10px;
+}
+```
+
+This custom class (`.igt-btn`) provides styled buttons for the counter component.
+
+<Warning>
+When using both Tailwind utilities and custom CSS classes, be aware of potential specificity conflicts. Tailwind's utilities have specific specificity levels.
+</Warning>
+
+## Styling Approaches
+
+The Count App demonstrates two styling approaches:
+
+### 1. Tailwind Utilities (Recommended)
+
+Use utility classes directly in templates:
+
+```html
+<button class="px-5 py-1 rounded border-none cursor-pointer text-black bg-green-400 mx-2.5 my-5">
+  Increment
+</button>
+```
+
+### 2. Custom CSS Classes
+
+Define custom classes in component CSS files:
+
+```html
+<button class="igt-btn">
+  Increment
+</button>
+```
+
+## Dependencies
+
+The styling setup requires these packages (from `package.json`):
+
+```json package.json
+{
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.12",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.12"
+  }
+}
+```
+
+## How It Works
+
+1. **PostCSS Processing**: Angular's build system processes CSS through PostCSS
+2. **Tailwind Plugin**: The `@tailwindcss/postcss` plugin transforms the `@import 'tailwindcss'` directive
+3. **Utility Generation**: Tailwind generates utility classes based on usage in your templates
+4. **Bundle Output**: Processed CSS is bundled with your application
+
+<Note>
+Tailwind v4 uses a more efficient build process that only includes the utilities you actually use in your templates.
+</Note>
+
+## Customizing Tailwind
+
+With Tailwind v4, customization can be done directly in your CSS files using CSS variables and the `@theme` directive. Add customizations to `src/styles.css`:
+
+```css
+@import 'tailwindcss';
+
+@theme {
+  --color-primary: #3b82f6;
+  --color-secondary: #adff2f;
+}
+```
+
+## Production Optimization
+
+In production builds, Angular automatically:
+- Minifies CSS
+- Removes unused styles
+- Optimizes the bundle size
+- Applies cache-busting hashes
+
+Budget limits are configured in `angular.json`:
+
+```json
+"budgets": [
+  {
+    "type": "anyComponentStyle",
+    "maximumWarning": "4kB",
+    "maximumError": "8kB"
+  }
+]
+```
+
+<Warning>
+Component styles exceeding 4kB will trigger a warning, and those over 8kB will cause the build to fail.
+</Warning>
+
+## Related Pages
+
+- [Counter Component](/components/counter) - See how styles are applied in the counter component
+- [Development Setup](/development/setup) - Learn where style files are located in the project structure

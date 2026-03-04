@@ -1,80 +1,212 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quickstart
+description: Get Count App running in minutes and start exploring modern Angular development
 ---
 
-## Get started in three steps
+Get the Count App up and running on your local machine in just a few steps.
 
-Get your documentation site running locally and make your first customization.
+## Prerequisites
 
-### Step 1: Set up your local environment
+Before you begin, make sure you have the following installed:
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
+- **Node.js** (version 20 or higher)
+- **npm** (version 11.6.4 or higher, as specified in package.json)
+
+<Note>
+The project uses npm as its package manager. You can check your versions with `node -v` and `npm -v`.
+</Note>
+
+## Installation Steps
+
+<Steps>
+  <Step title="Clone the repository">
+    Clone the Count App repository from GitHub:
     
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
+    ```bash
+    git clone https://github.com/GIODIROSA/count-app-angular.git
+    cd count-app-angular
+    ```
+  </Step>
+
+  <Step title="Install dependencies">
+    Install all required npm packages:
     
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 2: Deploy your changes
-
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
+    ```bash
+    npm install
+    ```
     
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+    This will install Angular 21, Tailwind CSS, Vitest, and all other dependencies listed in package.json.
+    
+    <Accordion title="What gets installed?">
+      Key dependencies include:
+      - `@angular/core` (21.2.0) - Core Angular framework
+      - `@angular/ssr` (21.2.0) - Server-side rendering support
+      - `tailwindcss` (4.1.12) - Utility-first CSS framework
+      - `vitest` (4.0.8) - Testing framework
+      - `express` (5.1.0) - Server for SSR
+    </Accordion>
+  </Step>
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+  <Step title="Start the development server">
+    Launch the Angular development server:
+    
+    ```bash
+    ng serve
+    ```
+    
+    The application will be available at `http://localhost:4200/`
+    
+    <Tip>
+    The dev server supports hot module replacement (HMR), so your changes will be reflected immediately without a full page reload.
+    </Tip>
+  </Step>
+</Steps>
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+## First Interaction
 
-### Step 3: Go live
-
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
-
-## Next steps
-
-Now that you have your docs running, explore these key features:
+Once the dev server is running, open your browser to `http://localhost:4200/` and you'll see the counter interface.
 
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card title="Increment" icon="plus">
+    Click the **+** button to increase the counter value by 1
+  </Card>
+  <Card title="Decrement" icon="minus">
+    Click the **-** button to decrease the counter value by 1 (minimum value is 0)
+  </Card>
+  <Card title="Reset" icon="rotate-left">
+    Click **Reiniciar** to reset the counter back to 0
+  </Card>
+  <Card title="Initial State" icon="hashtag">
+    The counter starts at 10 by default
+  </Card>
 </CardGroup>
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+The counter uses `Math.max(0, this.counter + value)` to prevent negative values. Try clicking the **-** button when the counter is at 0 — it won't go negative!
 </Note>
+
+## Understanding the Code
+
+The counter logic lives in `src/app/count/counter.components.ts`:
+
+```typescript src/app/count/counter.components.ts
+export class CountPageComponent {
+  counter = 10;
+
+  incrementby(value: number) {
+    this.counter = Math.max(0, this.counter + value);
+  }
+
+  reset() {
+    this.counter = 0
+  }
+}
+```
+
+The template in `src/app/count/counter.html` binds click events to these methods:
+
+```html src/app/count/counter.html
+<h1>{{counter}}</h1>
+<button (click)="incrementby(1)" class="igt-btn">+</button>
+<button (click)="incrementby(-1)" class="igt-btn">-</button>
+<button (click)="reset()" class="igt-btn">Reiniciar</button>
+```
+
+## Additional Commands
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+Creates optimized bundles in the `dist/` directory.
+
+### Serve with SSR
+
+```bash
+npm run serve:ssr:count-app
+```
+
+Runs the Express server with server-side rendering (requires building first).
+
+### Run Tests
+
+```bash
+npm test
+```
+
+Executes unit tests using Vitest.
+
+### Watch Mode
+
+```bash
+npm run watch
+```
+
+Builds the application in watch mode for continuous development.
+
+## Project Structure
+
+```
+count-app-angular/
+├── src/
+│   ├── app/
+│   │   ├── app.ts              # Root component
+│   │   ├── app.html            # Root template
+│   │   ├── app.routes.ts       # Route configuration
+│   │   └── count/
+│   │       ├── counter.components.ts  # Counter logic
+│   │       ├── counter.html           # Counter template
+│   │       └── counter.css            # Counter styles
+│   ├── main.ts                 # Client bootstrap
+│   ├── main.server.ts          # Server bootstrap
+│   └── server.ts               # Express server
+├── angular.json                # Angular CLI configuration
+├── package.json                # Dependencies and scripts
+└── tsconfig.json              # TypeScript configuration
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Port 4200 is already in use">
+    If port 4200 is occupied, you can specify a different port:
+    
+    ```bash
+    ng serve --port 4300
+    ```
+  </Accordion>
+
+  <Accordion title="npm install fails">
+    Make sure you're using Node.js 20 or higher and npm 11.6.4 or higher. You can update npm with:
+    
+    ```bash
+    npm install -g npm@11.6.4
+    ```
+  </Accordion>
+
+  <Accordion title="Changes not reflecting">
+    If hot module replacement isn't working, try:
+    1. Stop the dev server (Ctrl+C)
+    2. Clear the `.angular/` cache directory
+    3. Restart with `ng serve`
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Explore Components" icon="puzzle-piece" href="/components/counter">
+    Learn how the CountPageComponent is structured and how to extend it
+  </Card>
+  <Card title="Configure SSR" icon="server" href="/configuration/ssr">
+    Understand the server-side rendering setup and deployment
+  </Card>
+  <Card title="Customize Styles" icon="palette" href="/configuration/styling">
+    Modify the Tailwind CSS configuration and component styles
+  </Card>
+  <Card title="Write Tests" icon="flask" href="/development/testing">
+    Add unit tests for your components using Vitest
+  </Card>
+</CardGroup>

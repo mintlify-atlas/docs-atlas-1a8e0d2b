@@ -1,97 +1,244 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+mode: "custom"
 ---
 
-## Setting up
+<div className="relative overflow-hidden bg-[#121217] dark:bg-[#121217]">
+  {/* Hero Section */}
+  <div className="relative py-20 lg:py-24">
+    <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="grid lg:grid-cols-12 gap-12 items-center">
+        <div className="lg:col-span-7">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
+            Welcome to Count App Documentation
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-400 dark:text-gray-400 max-w-2xl mb-8">
+            A modern Angular counter application built with the latest Angular 21 features, including signals, server-side rendering, and Tailwind CSS styling.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <a 
+              href="/quickstart" 
+              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold transition-colors bg-[#22f48d] text-[#121217] hover:bg-[#55fb8b]"
+            >
+              Get Started
+            </a>
+            <a 
+              href="/introduction" 
+              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold transition-colors border border-white/30 bg-white/10 text-white hover:bg-white/20 hover:border-[#22f48d]"
+            >
+              Learn More
+            </a>
+          </div>
+        </div>
+        <div className="lg:col-span-5 hidden lg:flex items-center justify-center">
+          <div className="relative w-full max-w-md">
+            <div className="bg-[rgb(20,23,28)] dark:bg-[rgb(20,23,28)] rounded-2xl border border-white/10 p-8 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+              <div className="text-center">
+                <div className="text-6xl font-bold text-[#22f48d] mb-4">10</div>
+                <div className="flex justify-center gap-3">
+                  <button className="px-6 py-2 rounded-md border border-[#22f48d] text-[#22f48d] hover:bg-[#22f48d]/10 transition-colors font-semibold">
+                    +
+                  </button>
+                  <button className="px-6 py-2 rounded-md border border-[#22f48d] text-[#22f48d] hover:bg-[#22f48d]/10 transition-colors font-semibold">
+                    -
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-Get your documentation site up and running in minutes.
+{/* Quick Start Section */}
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
+    Quick Start
+  </h2>
+  <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
+    Get up and running with Count App in minutes
+  </p>
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+  <Steps>
+    <Step title="Clone the repository">
+      Clone the Count App repository to your local machine:
+      
+      ```bash
+      git clone https://github.com/GIODIROSA/count-app-angular.git
+      cd count-app-angular
+      ```
+    </Step>
 
-## Make it yours
+    <Step title="Install dependencies">
+      Install the required npm packages:
+      
+      ```bash
+      npm install
+      ```
+    </Step>
 
-Design a docs site that looks great and empowers your users.
+    <Step title="Start the development server">
+      Run the development server and open your browser:
+      
+      ```bash
+      ng serve
+      ```
+      
+      Navigate to `http://localhost:4200/` to see your counter app in action.
+    </Step>
+  </Steps>
+</div>
 
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
+{/* Explore Features */}
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
+    Explore by Topic
+  </h2>
+  <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
+    Discover what makes Count App powerful and easy to use
+  </p>
+
+  <CardGroup cols={2}>
     <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
+      title="Components"
+      icon="puzzle-piece"
+      href="/components/counter"
+    >
+      Learn about the counter component and how it manages state with Angular signals
+    </Card>
+    <Card
+      title="Server-Side Rendering"
+      icon="server"
+      href="/configuration/ssr"
+    >
+      Understand how SSR is configured for optimal performance and SEO
+    </Card>
+    <Card
+      title="Styling with Tailwind"
+      icon="palette"
+      href="/configuration/styling"
+    >
+      Explore the Tailwind CSS configuration and custom styling patterns
+    </Card>
+    <Card
+      title="Testing with Vitest"
+      icon="flask"
+      href="/development/testing"
+    >
+      Set up and run tests using the Vitest framework
+    </Card>
+  </CardGroup>
+</div>
 
-## Create beautiful pages
+{/* Key Features */}
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
+    Key Features
+  </h2>
+  <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
+    Built with modern Angular best practices
+  </p>
 
-Everything you need to create world-class documentation.
+  <div className="grid md:grid-cols-2 gap-6">
+    <div className="bg-white dark:bg-[#1a1d27] rounded-lg border border-gray-200 dark:border-[#27272a] p-6">
+      <div className="flex items-start gap-4">
+        <div className="text-[#22f48d] text-2xl">⚡</div>
+        <div>
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Angular 21 Signals</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Leverage the latest reactive primitives for fine-grained reactivity
+          </p>
+        </div>
+      </div>
+    </div>
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+    <div className="bg-white dark:bg-[#1a1d27] rounded-lg border border-gray-200 dark:border-[#27272a] p-6">
+      <div className="flex items-start gap-4">
+        <div className="text-[#22f48d] text-2xl">🚀</div>
+        <div>
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Server-Side Rendering</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Built-in SSR support for better performance and SEO
+          </p>
+        </div>
+      </div>
+    </div>
 
-## Need inspiration?
+    <div className="bg-white dark:bg-[#1a1d27] rounded-lg border border-gray-200 dark:border-[#27272a] p-6">
+      <div className="flex items-start gap-4">
+        <div className="text-[#22f48d] text-2xl">🎨</div>
+        <div>
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Tailwind CSS</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Utility-first CSS framework for rapid UI development
+          </p>
+        </div>
+      </div>
+    </div>
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+    <div className="bg-white dark:bg-[#1a1d27] rounded-lg border border-gray-200 dark:border-[#27272a] p-6">
+      <div className="flex items-start gap-4">
+        <div className="text-[#22f48d] text-2xl">🧪</div>
+        <div>
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Vitest Testing</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Fast and modern testing framework for your Angular components
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* Resources */}
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3">
+    Resources
+  </h2>
+  <p className="text-base text-gray-600 dark:text-gray-400 mb-8">
+    Everything you need to build with Count App
+  </p>
+
+  <CardGroup cols={3}>
+    <Card
+      title="Introduction"
+      icon="book-open"
+      href="/introduction"
+    >
+      Learn about the architecture and design principles
+    </Card>
+    <Card
+      title="Development Setup"
+      icon="code"
+      href="/development/setup"
+    >
+      Set up your development environment
+    </Card>
+    <Card
+      title="GitHub Repository"
+      icon="github"
+      href="https://github.com/GIODIROSA/count-app-angular"
+    >
+      View the source code and contribute
+    </Card>
+  </CardGroup>
+</div>
+
+{/* Closing CTA */}
+<div className="mt-16 mb-16 max-w-5xl mx-auto px-6">
+  <div className="bg-white dark:bg-[#1a1d27] rounded-2xl border border-gray-200 dark:border-[#27272a] p-8 sm:p-12 text-center">
+    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-4">
+      Ready to get started?
+    </h2>
+    <p className="text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+      Follow our quickstart guide to build your first counter application with Angular 21
+    </p>
+    <a 
+      href="/quickstart" 
+      className="inline-flex items-center px-6 py-3 rounded-lg font-semibold transition-colors bg-[#22f48d] text-[#121217] hover:bg-[#55fb8b]"
+    >
+      Get Started Now
+    </a>
+  </div>
+</div>

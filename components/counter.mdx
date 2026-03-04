@@ -1,0 +1,190 @@
+---
+title: 'Counter Component'
+description: 'Interactive counter component with increment, decrement, and reset functionality'
+---
+
+## Overview
+
+The `CountPageComponent` is the main feature component that displays an interactive counter. Users can increment, decrement, and reset the counter value with a minimum value constraint of 0.
+
+## Component Definition
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  templateUrl: './counter.html',
+  styleUrl: './counter.css'
+})
+export class CountPageComponent {
+  counter = 10;
+
+  incrementby(value: number) {
+    this.counter = Math.max(0, this.counter + value);
+  }
+
+  reset() {
+    this.counter = 0;
+  }
+}
+```
+
+## Component Configuration
+
+<ParamField path="templateUrl" type="string" default="./counter.html">
+  External template file containing the component's HTML structure
+</ParamField>
+
+<ParamField path="styleUrl" type="string" default="./counter.css">
+  Component-scoped stylesheet for custom button styling
+</ParamField>
+
+## Properties
+
+### counter
+
+```typescript
+counter = 10;
+```
+
+The current counter value. Initialized to `10` by default and constrained to a minimum value of `0`.
+
+## Methods
+
+### incrementby(value: number)
+
+Increases or decreases the counter by the specified value while ensuring it never goes below zero.
+
+```typescript
+incrementby(value: number) {
+  this.counter = Math.max(0, this.counter + value);
+}
+```
+
+**Parameters:**
+
+<ParamField path="value" type="number" required>
+  The amount to add to the counter. Can be positive (increment) or negative (decrement)
+</ParamField>
+
+**Behavior:**
+
+- Uses `Math.max(0, ...)` to ensure the counter never goes below 0
+- Accepts negative values for decrementing
+- Accepts positive values for incrementing
+
+<Note>
+  The counter has a built-in constraint that prevents negative values. Attempting to decrement below 0 will result in the counter staying at 0.
+</Note>
+
+### reset()
+
+Resets the counter back to zero.
+
+```typescript
+reset() {
+  this.counter = 0;
+}
+```
+
+**Parameters:** None
+
+**Returns:** void
+
+## Template
+
+The component template provides an interactive UI for the counter:
+
+```html
+<span>Desde el componente html</span>
+<h1>{{counter}}</h1>
+
+<hr>
+<button (click)="incrementby(1)" class="igt-btn">+</button>
+<button (click)="incrementby(-1)" class="igt-btn">-</button>
+<button (click)="reset()" class="igt-btn">Reiniciar</button>
+```
+
+### Template Features
+
+- **Data Binding**: Uses interpolation `{{counter}}` to display the current value
+- **Event Binding**: Buttons use `(click)` event binding to trigger component methods
+- **Increment Button**: Calls `incrementby(1)` to increase the counter
+- **Decrement Button**: Calls `incrementby(-1)` to decrease the counter
+- **Reset Button**: Calls `reset()` to return counter to 0
+
+## Styling
+
+The component includes custom CSS for button styling:
+
+```css
+.igt-btn {
+  padding: 5px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  color: #000;
+  background-color: greenyellow;
+  margin: 20px 10px;
+}
+```
+
+### Button Styles
+
+- **Background**: Bright green-yellow color (`greenyellow`)
+- **Padding**: 5px vertical, 20px horizontal
+- **Border**: No border with 5px rounded corners
+- **Spacing**: 20px top/bottom margin, 10px left/right margin
+- **Cursor**: Pointer on hover for better UX
+
+## Usage Example
+
+<CodeGroup>
+
+```typescript Basic Usage
+import { CountPageComponent } from './count/counter.components';
+
+// In your route configuration
+{
+  path: 'counter',
+  component: CountPageComponent
+}
+```
+
+```typescript Accessing Methods
+const component = new CountPageComponent();
+
+// Increment by 1
+component.incrementby(1);
+
+// Decrement by 1
+component.incrementby(-1);
+
+// Reset to 0
+component.reset();
+```
+
+</CodeGroup>
+
+## Key Features
+
+- **Zero-Constrained Counter**: Automatically prevents negative values
+- **Flexible Increment**: Single method handles both increment and decrement
+- **Simple State Management**: Uses plain class properties (no complex state libraries needed)
+- **Component-Scoped Styles**: CSS is encapsulated to this component
+- **External Templates**: Separates HTML and CSS for better maintainability
+
+## Best Practices
+
+<Tip>
+  The `incrementby` method cleverly handles both incrementing and decrementing with a single function by accepting positive or negative values. This reduces code duplication.
+</Tip>
+
+<Warning>
+  The counter value is constrained to a minimum of 0. If you need to support negative values, modify the `incrementby` method to remove the `Math.max(0, ...)` constraint.
+</Warning>
+
+## Related
+
+- [App Component](/components/app) - Root application component
+- [Routing Configuration](/configuration/routing) - Setting up routes

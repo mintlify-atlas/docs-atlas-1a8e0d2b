@@ -1,0 +1,298 @@
+---
+title: 'Testing'
+description: 'Write and run tests for Count App using Vitest'
+---
+
+## Overview
+
+Count App uses **Vitest** as its testing framework, configured through Angular's built-in test builder. Vitest provides a fast, modern testing experience with features like:
+
+- Fast execution with smart watch mode
+- ESM-first design
+- Compatible with Jest's API
+- Built-in TypeScript support
+
+## Running Tests
+
+Run all tests using the npm test script:
+
+```bash
+npm test
+```
+
+Or using the Angular CLI directly:
+
+```bash
+ng test
+```
+
+<Note>
+The test command uses the `@angular/build:unit-test` builder configured in angular.json:76.
+</Note>
+
+## Test Configuration
+
+### TypeScript Configuration
+
+The test setup is configured in tsconfig.spec.json:4:
+
+```json tsconfig.spec.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": [
+      "vitest/globals"
+    ]
+  },
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.spec.ts"
+  ]
+}
+```
+
+**Key settings:**
+- Extends the base TypeScript configuration
+- Includes Vitest global types (describe, it, expect, etc.)
+- Only includes `.spec.ts` and `.d.ts` files from the src directory
+
+### Angular Test Builder
+
+The test builder is configured in angular.json:75-77:
+
+```json angular.json
+"test": {
+  "builder": "@angular/build:unit-test"
+}
+```
+
+## Writing Tests
+
+### Basic Component Test
+
+Here's the example test from src/app/app.spec.ts:4:
+
+```typescript src/app/app.spec.ts
+import { TestBed } from '@angular/core/testing';
+import { App } from './app';
+
+describe('App', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [App],
+    }).compileComponents();
+  });
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
+
+  it('should render title', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, count-app');
+  });
+});
+```
+
+### Test Structure
+
+<Steps>
+  <Step title="Set up TestBed">
+    Use `TestBed.configureTestingModule()` to configure the testing module with the component and its dependencies:
+    
+    ```typescript
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [App],
+      }).compileComponents();
+    });
+    ```
+  </Step>
+
+  <Step title="Create component fixture">
+    Create a fixture to interact with the component:
+    
+    ```typescript
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    ```
+  </Step>
+
+  <Step title="Write assertions">
+    Use Vitest's expect API to make assertions:
+    
+    ```typescript
+    expect(app).toBeTruthy();
+    expect(compiled.querySelector('h1')?.textContent)
+      .toContain('Hello, count-app');
+    ```
+  </Step>
+</Steps>
+
+## Test Patterns
+
+### Testing Component Creation
+
+```typescript
+it('should create the app', () => {
+  const fixture = TestBed.createComponent(App);
+  const app = fixture.componentInstance;
+  expect(app).toBeTruthy();
+});
+```
+
+### Testing Template Rendering
+
+```typescript
+it('should render title', async () => {
+  const fixture = TestBed.createComponent(App);
+  await fixture.whenStable();
+  const compiled = fixture.nativeElement as HTMLElement;
+  expect(compiled.querySelector('h1')?.textContent)
+    .toContain('Hello, count-app');
+});
+```
+
+<Note>
+Always call `await fixture.whenStable()` when testing asynchronous operations or template bindings to ensure all changes are applied.
+</Note>
+
+### Testing User Interactions
+
+For testing button clicks and counter updates:
+
+```typescript
+it('should increment counter when button is clicked', async () => {
+  const fixture = TestBed.createComponent(App);
+  await fixture.whenStable();
+  
+  const button = fixture.nativeElement.querySelector('button');
+  button?.click();
+  fixture.detectChanges();
+  
+  const counter = fixture.nativeElement.querySelector('.counter');
+  expect(counter?.textContent).toContain('1');
+});
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use describe blocks for organization">
+    Group related tests together:
+    
+    ```typescript
+    describe('CounterComponent', () => {
+      describe('increment()', () => {
+        it('should increase count by 1', () => {
+          // test
+        });
+      });
+      
+      describe('decrement()', () => {
+        it('should decrease count by 1', () => {
+          // test
+        });
+      });
+    });
+    ```
+  </Accordion>
+
+  <Accordion title="Clean up after each test">
+    Use `beforeEach` and `afterEach` for setup and cleanup:
+    
+    ```typescript
+    let fixture: ComponentFixture<App>;
+    let component: App;
+    
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [App],
+      }).compileComponents();
+      
+      fixture = TestBed.createComponent(App);
+      component = fixture.componentInstance;
+    });
+    ```
+  </Accordion>
+
+  <Accordion title="Test behavior, not implementation">
+    Focus on testing what the component does, not how it does it:
+    
+    ```typescript
+    // Good: Tests user-visible behavior
+    it('should display the current count', () => {
+      expect(compiled.textContent).toContain('Count: 0');
+    });
+    
+    // Avoid: Tests implementation details
+    it('should have a count property', () => {
+      expect(component.count).toBeDefined();
+    });
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## VSCode Integration
+
+The project includes a VSCode launch configuration for running tests (see .vscode/launch.json:12-18):
+
+```json
+{
+  "name": "ng test",
+  "type": "chrome",
+  "request": "launch",
+  "preLaunchTask": "npm: test",
+  "url": "http://localhost:9876/debug.html"
+}
+```
+
+To use it:
+1. Open the Run and Debug panel (Ctrl+Shift+D)
+2. Select "ng test" from the dropdown
+3. Press F5 or click the play button
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tests fail with 'Cannot find module'">
+    Ensure your tsconfig.spec.json includes the correct files:
+    
+    ```json
+    "include": [
+      "src/**/*.d.ts",
+      "src/**/*.spec.ts"
+    ]
+    ```
+  </Accordion>
+
+  <Accordion title="Vitest globals not recognized">
+    Make sure `vitest/globals` is in your types array in tsconfig.spec.json:7-9:
+    
+    ```json
+    "types": [
+      "vitest/globals"
+    ]
+    ```
+  </Accordion>
+
+  <Accordion title="Template changes not reflected in tests">
+    Call `fixture.detectChanges()` to trigger change detection:
+    
+    ```typescript
+    button.click();
+    fixture.detectChanges(); // Update the view
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<Card title="Building for Production" icon="hammer" href="/development/building">
+  Learn how to build and deploy your application
+</Card>
