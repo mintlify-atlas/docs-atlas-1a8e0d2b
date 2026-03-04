@@ -1,0 +1,56 @@
+{
+  "projectType": "frontend",
+  "projectName": "Count App",
+  "projectDescription": "A simple Angular counter application with SSR support and Tailwind CSS styling.",
+  "theme": "palm",
+  "primaryColor": "#22f48d",
+  "lightColor": "#55fb8b",
+  "darkColor": "#c9fcd1",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": [
+          "introduction",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "Components",
+        "pages": [
+          "components/app",
+          "components/counter"
+        ]
+      },
+      {
+        "group": "Configuration",
+        "pages": [
+          "configuration/routing",
+          "configuration/ssr",
+          "configuration/styling"
+        ]
+      },
+      {
+        "group": "Development",
+        "pages": [
+          "development/setup",
+          "development/testing",
+          "development/building"
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Angular 21 with signals",
+    "Server-Side Rendering (SSR)",
+    "Tailwind CSS styling",
+    "Vitest testing framework",
+    "Simple counter component with increment/decrement"
+  ],
+  "publicApiSurface": [
+    "App (root component)",
+    "CountPageComponent",
+    "incrementby(value: number)",
+    "reset()"
+  ]
+}
